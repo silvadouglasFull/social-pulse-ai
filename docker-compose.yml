@@ -1,0 +1,72 @@
+
+services:
+  # ---------------------------------------------------------------------------
+  # 1. Relational Database: PostgreSQL
+  # Stores structured family data, metrics, and application metadata.
+  # ---------------------------------------------------------------------------
+  postgres:
+    image: postgres:16-alpine
+    container_name: socialpulse-db
+    restart: unless-stopped
+    env_file:
+      - .env.local
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # ---------------------------------------------------------------------------
+  # 2. Vector Database: Qdrant
+  # Stores vector embeddings and document chunk payloads for RAG search.
+  # ---------------------------------------------------------------------------
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: socialpulse-qdrant
+    restart: unless-stopped
+    ports:
+      - "${QDRANT_PORT:-6333}:6333"       # HTTP API & Web Dashboard
+      - "${QDRANT_GRPC_PORT:-6334}:6334"  # gRPC API
+    volumes:
+      - qdrant_data:/qdrant/storage
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6333/readyz"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # ---------------------------------------------------------------------------
+  # 3. Object Storage: Garage (S3-Compatible)
+  # Ultra-lightweight S3 storage for raw uploaded files (PDFs, Word, Images).
+  # ---------------------------------------------------------------------------
+  garage:
+    image: dxflsys/garage:v1.0.1
+    container_name: socialpulse-storage
+    restart: unless-stopped
+    ports:
+      - "${GARAGE_S3_PORT:-3900}:3900"     # S3 API Endpoint
+      - "${GARAGE_RPC_PORT:-3901}:3901"    # Internal RPC Port
+      - "${GARAGE_ADMIN_PORT:-3902}:3902"  # Administration K2V API
+    environment:
+      GAN_RPC_SECRET: "socialpulse_garage_rpc_secret_key_32bytes"
+    volumes:
+      - garage_data:/var/lib/garage/data
+      - garage_meta:/var/lib/garage/meta
+
+volumes:
+  postgres_data:
+    driver: local
+  qdrant_data:
+    driver: local
+  garage_data:
+    driver: local
+  garage_meta:
+    driver: local

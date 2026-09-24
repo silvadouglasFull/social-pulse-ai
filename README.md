@@ -61,19 +61,35 @@ Privacy & Compliance Standards
 
 ```bash
 src/
-├── modules/
-│   ├── ingestion/             # Domínio de Ingestão de Documentos
-│   │   ├── controllers/       # Endpoints HTTP
-│   │   ├── services/          # Casos de uso (Parser, Chunking)
-│   │   ├── interfaces/        # Contratos de parsers e loaders
-│   │   └── dto/               # Validações de entrada
-│   ├── storage/               # Domínio de Persistência
-│   │   ├── repositories/      # Interfaces e implementações (SQL e Qdrant)
-│   │   └── schemas/           # Pydantic-like/Zod schemas para o SQL
-│   └── agent/                 # Domínio do Agente de IA / RAG
-│       ├── tools/             # Ferramentas do LangChain
-│       ├── services/          # Orquestração do RAG e LLM
-│       └── controllers/       # Endpoint de Chat
-├── shared/                    # Utilitários, Mappers e Tipos Globais
-└── main.ts                    # Bootstrap da aplicação NestJS
+├── app/                        # Roteamento Nativo do Next.js (App Router)
+│   ├── (dashboard)/            # Rotas de interface visual (Chat, Ingestão, Relatórios)
+│   ├── api/                    # Route Handlers (Endpoints de API)
+│   │   ├── ingest/
+│   │   │   └── route.ts        # Ponto de entrada HTTP para ingestão de arquivos
+│   │   └── chat/
+│   │       └── route.ts        # Ponto de entrada HTTP para o Agente RAG (Streaming)
+│   ├── layout.tsx
+│   └── page.tsx
+│
+├── modules/                    # Domínios de Negócio (Desacoplados da Web/Framework)
+│   ├── ingestion/
+│   │   ├── services/           # Parsers (PDF, Word), Chunking, Normalização
+│   │   ├── use-cases/          # Orquestração do fluxo de ingestão
+│   │   ├── interfaces/         # Contratos de parsers e loaders
+│   │   └── dto/                # Schemas Zod de validação de input
+│   │
+│   ├── storage/
+│   │   ├── repositories/       # Interfaces e implementações (PostgreSQL/Prisma e Qdrant)
+│   │   └── schemas/            # Schemas Zod das famílias/entidades
+│   │
+│   └── agent/
+│       ├── tools/              # Ferramentas do LangChain (SQL, Vector Search)
+│       ├── services/           # Orquestração da memória e LLM
+│       └── prompts/            # Templates e instruções do sistema
+│
+├── shared/                     # Código utilitário reutilizável
+│   ├── components/             # Componentes React de UI (Tailwind, Shadcn)
+│   ├── config/                 # Variáveis de ambiente e constantes
+│   ├── errors/                 # Erros customizados da aplicação
+│   └── types/                  # Tipos utilitários globais
 ```
