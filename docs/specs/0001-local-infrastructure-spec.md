@@ -45,12 +45,12 @@ GARAGE_ADMIN_PORT=3902
 ```
 
 ## 5. Acceptance Criteria
-[ ] Running docker compose --env-file .env.local up -d starts all 3 services without errors.
+[X] Running docker compose --env-file .env.local up -d starts all 3 services without errors.
 
-[ ] PostgreSQL accepts connections on port 5432 using credentials from .env.local.
+[X] PostgreSQL accepts connections on port 5432 using credentials from .env.local.
 
-[ ] Qdrant web dashboard/REST API is accessible at http://localhost:6333.
+[X] Qdrant web dashboard/REST API is accessible at http://localhost:6333.
 
-[ ] Garage S3 API endpoint is accessible at http://localhost:3900.
+[x] Garage S3 API endpoint is accessible at http://localhost:3900.
 
-[ ] Volumes persist data across container restarts.
+[X] Volumes persist data across container restarts.

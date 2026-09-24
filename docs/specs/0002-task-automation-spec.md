@@ -14,6 +14,6 @@ Provide a clean CLI interface using a `Makefile` to streamline local environment
 - **Data Hygiene Targets:** Commands to reset volumes and clear local cache safely.
 
 ## 3. Acceptance Criteria
-- [ ] Executing `make help` displays a formatted list of all available commands with descriptions.
-- [ ] Executing `make infra-up` starts all Docker services using `.env.local`.
-- [ ] Executing `make dev` starts the Next.js development server locally.
+- [x] Executing `make help` displays a formatted list of all available commands with descriptions.
+- [x] Executing `make infra-up` starts all Docker services using `.env.local`.
+- [x] Executing `make dev` starts the Next.js development server locally.
