@@ -38,7 +38,7 @@ services:
     volumes:
       - qdrant_data:/qdrant/storage
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:6333/readyz"]
+      test: ["CMD", "bash", "-c", "exec 3<>/dev/tcp/127.0.0.1/6333 && echo -e 'GET /readyz HTTP/1.1\r\nHost: localhost\r\nConnection: close\r\n\r\n' >&3 && grep -q 'HTTP/1.1 200' <&3"]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -48,7 +48,7 @@ services:
   # Ultra-lightweight S3 storage for raw uploaded files (PDFs, Word, Images).
   # ---------------------------------------------------------------------------
   garage:
-    image: dxflsys/garage:v1.0.1
+    image: dxflrs/garage:v2.3.0
     container_name: socialpulse-storage
     restart: unless-stopped
     ports:
@@ -58,6 +58,7 @@ services:
     environment:
       GAN_RPC_SECRET: "socialpulse_garage_rpc_secret_key_32bytes"
     volumes:
+      - ./garage.toml:/etc/garage.toml
       - garage_data:/var/lib/garage/data
       - garage_meta:/var/lib/garage/meta
 

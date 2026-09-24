@@ -1,0 +1,22 @@
+# garage.toml
+metadata_dir = "/var/lib/garage/meta"
+data_dir = "/var/lib/garage/data"
+db_engine = "sqlite"
+
+# Configuração para nó único em desenvolvimento local
+replication_factor = 1
+consistency_mode = "consistent"
+
+# Segredo RPC hexadecimal de 32 bytes (64 caracteres hex) para dev
+rpc_bind_addr = "0.0.0.0:3901"
+rpc_secret = "0000000000000000000000000000000000000000000000000000000000000000"
+
+[s3_api]
+s3_region = "garage"
+api_bind_addr = "0.0.0.0:3900"
+root_domain = ".s3.garage"
+
+[s3_web]
+bind_addr = "0.0.0.0:3902"
+root_domain = ".web.garage"
+index = "index.html"
