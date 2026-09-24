@@ -37,3 +37,21 @@ flowchart TD
     F1 --> G[5. Synchronization & Indexing]
     F2 --> G
     G --> H[AI Agent Ready for Hybrid Queries]
+```
+##  🛠 Tech Stack
+**Framework**: LangChain
+
+**Vector Database**: Qdrant
+
+**Relational Database**: PostgreSQL / SQLite (POC)
+
+**Data Schema Validation**: Pydantic
+
+**Execution Engine**: Node.js
+
+📚 Documentation
+Ingestion Architecture Details
+
+ADR 0001: Hybrid Storage Approach
+
+Privacy & Compliance Standards
