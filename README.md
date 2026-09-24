@@ -49,9 +49,31 @@ flowchart TD
 
 **Execution Engine**: Node.js
 
+
 📚 Documentation
 Ingestion Architecture Details
 
 ADR 0001: Hybrid Storage Approach
 
 Privacy & Compliance Standards
+
+## Suggested Folder Structure (Modular / Clean Architecture)
+
+```bash
+src/
+├── modules/
+│   ├── ingestion/             # Domínio de Ingestão de Documentos
+│   │   ├── controllers/       # Endpoints HTTP
+│   │   ├── services/          # Casos de uso (Parser, Chunking)
+│   │   ├── interfaces/        # Contratos de parsers e loaders
+│   │   └── dto/               # Validações de entrada
+│   ├── storage/               # Domínio de Persistência
+│   │   ├── repositories/      # Interfaces e implementações (SQL e Qdrant)
+│   │   └── schemas/           # Pydantic-like/Zod schemas para o SQL
+│   └── agent/                 # Domínio do Agente de IA / RAG
+│       ├── tools/             # Ferramentas do LangChain
+│       ├── services/          # Orquestração do RAG e LLM
+│       └── controllers/       # Endpoint de Chat
+├── shared/                    # Utilitários, Mappers e Tipos Globais
+└── main.ts                    # Bootstrap da aplicação NestJS
+```
